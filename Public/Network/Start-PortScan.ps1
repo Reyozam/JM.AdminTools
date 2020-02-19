@@ -9,11 +9,11 @@ function Start-PortScan
     Start a port scan on the selected computer on common TCP Ports
 
     .EXAMPLE
-    PS C:\> Start-PortScan
+    PS C:\> Start-PortScan -computername Server01
 
 	Service : FTP Data
 	Port    : 20
-	Status  : Closed
+	Status  : Open
 
 	Service : FTP Command
 	Port    : 21

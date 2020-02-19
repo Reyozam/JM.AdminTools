@@ -49,7 +49,7 @@ PS C:\>Find-StringInFile -search "string" -path C:\users\
 
 arp -a powershell version
 ```powershell
-PS C:\>Get-ARPCach
+PS C:\>Get-ARPCache
 ```
 ### Get-ComputerUptime
 

@@ -1,32 +1,15 @@
-﻿###############################################################################################################
-# Language     :  PowerShell 4.0
-# Filename     :  Test-Credential.ps1
-# Autor        :  Julien Mazoyer
-# Description  :  Test an authentification in AD or local context
-###############################################################################################################
-
-<#
-    .SYNOPSIS
-    Test an authentification in AD or local context
-
-    .DESCRIPTION
-    Test an authentification in AD or local context
-
-    .EXAMPLE
-    #AD Credentials
-	PS C:\> $cred = get-credential
-    PS C:\> Test-Credential $cred
-    True
-
-    .EXAMPLE
-    #Local credentials
-    PS C:\> $cred = get-credential
-    PS C:\> Test-Credential -ComputerName SomeComputer -Credential $cred
-#>
-
-function Test-Credential
+﻿function Test-Credential
 {
-
+<#
+.SYNOPSIS
+    Test local or AD credential on remote computer
+.DESCRIPTION
+    Test local or AD credential on remote computer
+.EXAMPLE
+    $Credential = Get-Credential
+    test-credential -credential  -domain contoso.com
+    Test-Credential -credential -computername server01
+#> 
 
     [cmdletbinding(DefaultParameterSetName = 'Domain')]
     param(

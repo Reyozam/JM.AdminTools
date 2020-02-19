@@ -11,4 +11,4 @@ foreach ($import in @($public + $private))
     }
 }
 
-Export-ModuleMember -Function $public.Basename
+Export-ModuleMember -Function $public.Basename -Alias *

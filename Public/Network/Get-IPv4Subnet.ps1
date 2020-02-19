@@ -1,4 +1,7 @@
 
+
+function Convert-IPv4Address
+{
 <#
     .SYNOPSIS
     Calculate a subnet based on an IP-Address and the subnetmask or CIDR
@@ -23,11 +26,7 @@
     IPs       : 256
     Hosts     : 254
 
-    .LINK
-    https://github.com/BornToBeRoot/PowerShell/blob/master/Documentation/Function/Get-IPv4Subnet.README.md
 #>
-function Convert-IPv4Address
-{
 
     [CmdletBinding(DefaultParameterSetName = 'IPv4Address')]
     param(
@@ -120,8 +119,6 @@ function Get-IPv4Subnet
     Begin
     {
 
-
-
     }
 
     Process
@@ -181,18 +178,9 @@ function Get-IPv4Subnet
             Broadcast = $Broadcast
             IPs       = $AvailableIPs
             Hosts     = $Hosts
+            Mask      = $Mask
+            $CIDR     = $CIDR
         }
-
-        # Set the default properties
-        $Result.PSObject.TypeNames.Insert(0, 'Subnet.Information')
-
-        $DefaultDisplaySet = 'NetworkID', 'Broadcast', 'IPs', 'Hosts'
-
-        $DefaultDisplayPropertySet = New-Object System.Management.Automation.PSPropertySet('DefaultDisplayPropertySet', [string[]]$DefaultDisplaySet)
-
-        $PSStandardMembers = [System.Management.Automation.PSMemberInfo[]]@($DefaultDisplayPropertySet)
-
-        $Result | Add-Member MemberSet PSStandardMembers $PSStandardMembers
 
         # Return the object to the pipeline
         $Result

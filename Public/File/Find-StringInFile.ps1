@@ -1,29 +1,19 @@
-###############################################################################################################
-# Language     :  PowerShell 4.0
-# Filename     :  Find-StringInFile.ps1
-# Autor        :  Julien Mazoyer Fork from BornToBeRoot (https://github.com/BornToBeRoot)
-# Description  :  Test an authentification in AD or local context
-###############################################################################################################
-
-<#
-    .SYNOPSIS
-    Find String in one or more files
-
-    .DESCRIPTION
-     Find String in one or more files
-
-    .EXAMPLE
-
-    Find-StringInFile -Path "C:\Scripts\FolderWithFiles" -Search "Test01"
-
-	Filename    Path                      LineNumber Matches
-	--------    ----                      ---------- -------
-	File_01.txt E:\Temp\Files\File_01.txt          1 {Test01}
-	File_02.txt E:\Temp\Files\File_02.txt          1 {TEST01}
-	File_03.txt E:\Temp\Files\File_03.txt          1 {TeST01}
-#>
 function Find-StringInFile
 {
+<#
+.SYNOPSIS
+    Search for a string in files from a path
+.DESCRIPTION
+    Search for a string in files from a path
+.PARAMETER search
+    String to search
+.PARAMETER Path
+    Folder where to look for
+.EXAMPLE
+    Find-StringInFile -search "string" -path C:\users\
+.NOTES
+    Fork from https://github.com/BornToBeRoot
+#>
 
     [CmdletBinding()]
     param(

@@ -1,22 +1,19 @@
-###############################################################################################################
-# Language     :  PowerShell 4.0
-# Filename     :  Set-EnvironmentVariable.ps1
-# Autor        :  Julien Mazoyer
-# Description  :  Set Environment Variable
-###############################################################################################################
-
-<#
-      .SYNOPSIS
-      Set Environment Variable
-
-      .DESCRIPTION
-      Set Environment Variable
-
-      .EXAMPLE
-      Set Environment Variable -Name "VARIABLE" -Value "VALUE" -Target User
-#>
 function Set-EnvironmentVariable
 {
+<#
+.SYNOPSIS
+    Set Environment variable
+.DESCRIPTION
+    Set Environment variable
+.PARAMETER  Name
+    Variable name
+.PARAMETER  Target
+    Environement variable context machine or user
+.PARAMETER  Value
+    Variable value
+.EXAMPLE
+    Set-environmentvariable -Name "Test" -value "testValue" -target machine
+#> 
     param
     (
         [string]

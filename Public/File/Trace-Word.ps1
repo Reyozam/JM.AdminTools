@@ -1,10 +1,22 @@
 ﻿
 Function Trace-Word
 {
+<#
+.SYNOPSIS
+    Look and highligh from words in a file content
+.DESCRIPTION
+    Look and highligh from words in a file content
+.PARAMETER Content
+    Content
+.PARAMETER words
+    words to look for
+.EXAMPLE
+    Get-Content file.txt | Trace-Word -words "Computer01","Server02"
+#>
     [Cmdletbinding()]
     [Alias("Highlight")]
     Param(
-            [Parameter(ValueFromPipeline=$true, Position=0)] [string[]] $content,
+            [Parameter(ValueFromPipeline=$true, Position=0)] [string[]]$Content,
             [Parameter(Position=1)] 
             [ValidateNotNull()]
             [String[]] $words = $(throw "Provide word[s] to be highlighted!")

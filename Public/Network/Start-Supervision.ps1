@@ -1,30 +1,22 @@
-###############################################################################################################
-# Language     :  PowerShell 4.0
-# Filename     :  Start-Supervisionps1
-# Autor        :  Julien Mazoyer
-# Description  :  Show a graphical table with ping status of multiple hosts
-###############################################################################################################
 
-<#
-    .SYNOPSIS
-    Show a graphical table with ping status of multiple hosts
-
-    .DESCRIPTION
-    Show a graphical table with ping status of multiple hosts
-
-    .EXAMPLE
-    Start-Supervision "unknow.fr","localhost"
-
-	| HOST      | STATUS | SUCCESS  | FAILURE  | ATTEMPTS  |
-    | unknow.fr | DOWN   | 0,00%    | 100,00%  | 1         |
-    | localhost | UP     | 100,00%  | 0,00%    | 1         |
-
-
-#>
 Function Start-Supervision
 {
+<#
+    .SYNOPSIS
+    Monitoring ping on multiple target
 
-    #Parameter Definition
+    .DESCRIPTION
+    Monitoring ping on multiple target
+
+    .EXAMPLE
+    PS C:\> Start-Supervision  -hosts nas,jeedom,bigone,toto
+    _____________________________________________________
+    | HOST   | STATUS | SUCCESS  | FAILURE  | ATTEMPTS  |
+    | nas    | UP     | 100,00%  | 0,00%    | 5         |
+    | jeedom | UP     | 100,00%  | 0,00%    | 5         |
+    | bigone | UP     | 100,00%  | 0,00%    | 5         |
+    | toto   | DOWN   | 0,00%    | 100,00%  | 5         |
+#>
     Param
     (
         [Parameter(Mandatory=$True,Position=1,ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true)]

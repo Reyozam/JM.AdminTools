@@ -1,16 +1,22 @@
 ﻿function Get-ComputerUptime
 {
+<#
+.SYNOPSIS
+    Get computer uptime
+.DESCRIPTION
+    Get computer uptime
+.PARAMETER ComputerName
+    Targtet computer
+.EXAMPLE
+    Get-ComputerUptime -computername Server01
+#> 
     [CmdletBinding()]
     param (
         
-        [Parameter(Mandatory = $true,
-            Position = 1,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory = $false, Position = 1, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias("Name")]
-        [string[]]$Computers,
-        [Parameter()]
-        [ValidateNotNull()]
+        [string]$ComputerName,
+        [Parameter()][ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
         $Credential = [System.Management.Automation.PSCredential]::Empty
@@ -20,40 +26,46 @@
     {
         if ($PSBoundParameters.ContainsKey("Credential"))
         {
-            $PSDefaultParameterValues = @{"Get-WmiObject:Credential" = $Credential }
+            $PSDefaultParameterValues = @{"Get-CimInstance:Credential" = $Credential }
         }
     }
     
     process 
     {
-        foreach ($Computer in $Computers)
+ 
+        try 
         {
-            
-            try 
+            if ($ComputerName)
             {
                 Write-Verbose "[$(Get-Date -format G)] Look for $computer uptime "
-                $UpTime = [Management.ManagementDateTimeConverter]::ToDateTime((Get-WmiObject Win32_OperatingSystem -ComputerName $Computer -ErrorAction Stop).LastBootUpTime)
 
-                [PSCustomObject]@{
-                    LastReboot = $UpTime
-                    TimeSpan   = (New-TimeSpan -Start $UpTime -End ([datetime]::now)) -f "g"
-                }
-
-
+                $UpTime = (Get-CimInstance -ClassName Win32_OperatingSystem -Property LastBootUpTime -ComputerName $ComputerName).LastBootUpTime
             }
-            catch 
+            else
             {
-                Write-Error "Unable to join $Computer"
+                $UpTime = (Get-CimInstance -ClassName Win32_OperatingSystem -Property LastBootUpTime).LastBootUpTime
             }
+               
+            [PSCustomObject]@{
+                LastReboot = $UpTime
+                TimeSpan   = (New-TimeSpan -Start $UpTime -End ([datetime]::now)) -f "g"
+            }
+
         }
-        
+        catch 
+        {
+            Write-Error $_
+        }
     }
-    
     end
     {
     }
     
+        
+}
+    
+
 
     
 
-}
+

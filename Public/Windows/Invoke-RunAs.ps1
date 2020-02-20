@@ -46,4 +46,4 @@ function Invoke-RunAs
         
 }
 
-New-Alias -Name RunASPS -Value Invoke-RunAS
+New-Alias -Name RunASPS -Value Invoke-RunAS -ErrorAction SilentlyContinue

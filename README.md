@@ -7,7 +7,7 @@ Some PowerShell helpers for SysAdmin daily tasks
 You can get the current release from this repository or install this from the PowerShell Gallery:
 
 ```powershell
-iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/Reyozam/JM.ScriptTools/master/InstallModule.ps1'))
+iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/Reyozam/JM.AdminTools/master/InstallModule.ps1'))
 ```
 
 
@@ -49,7 +49,7 @@ PS C:\>Find-StringInFile -search "string" -path C:\users\
 
 arp -a powershell version
 ```powershell
-PS C:\>Get-ARPCach
+PS C:\>Get-ARPCache
 ```
 ### Get-ComputerUptime
 

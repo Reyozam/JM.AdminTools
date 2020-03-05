@@ -24,12 +24,17 @@
         [Parameter(Mandatory = $false, Position = 1)]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
-        [string]$Group = "Administrators"
+        [string]$Group = "Administrators",
+
+        $Credential = [System.Management.Automation.PSCredential]::Empty
     )
     
     Begin
     {
-             
+        if ($PSBoundParameters.ContainsKey("Credential"))
+        {
+            $PSDefaultParameterValues = @{"Invoke-Command:Credential" = $Credential }
+        } 
     }
     Process
     {

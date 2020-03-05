@@ -26,7 +26,7 @@
     {
         if ($PSBoundParameters.ContainsKey("Credential"))
         {
-            $PSDefaultParameterValues = @{"Get-CimInstance:Credential" = $Credential }
+            $PSDefaultParameterValues = @{"New-CimSession:Credential" = $Credential }
         }
     }
     
@@ -38,8 +38,9 @@
             if ($ComputerName)
             {
                 Write-Verbose "[$(Get-Date -format G)] Look for $computer uptime "
-
-                $UpTime = (Get-CimInstance -ClassName Win32_OperatingSystem -Property LastBootUpTime -ComputerName $ComputerName).LastBootUpTime
+                $CIMSession = New-CimSession -ComputerName $ComputerName 
+                $UpTime = (Get-CimInstance -ClassName Win32_OperatingSystem -Property LastBootUpTime -CimSession $CIMSession).LastBootUpTime
+                Remove-CimSession -CimSession $CIMSession
             }
             else
             {

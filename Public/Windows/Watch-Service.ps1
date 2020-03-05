@@ -32,7 +32,7 @@
         throw "Service `"$ServiceName`" does not exist"
     }
         
-    Write-Verbose "[$(Get-Date -f "g")] Watching service $serviceName..." -Verbose
+    Write-Verbose "[$(Get-Date -f "hh:mm:ss")] Watching service $serviceName..." -Verbose
 
     do
     {
@@ -40,8 +40,8 @@
 
         if (Get-Service $SVC.Name | Where-Object {$_.Status -eq "Stopped"})
         {
-            Write-Warning "[$(Get-Date -f "g")] Service $serviceName has stopped !" -Verbose
-            Write-Verbose "[$(Get-Date -f "g")] Restarting service $serviceName..." -Verbose
+            Write-Warning "[$(Get-Date -f "hh:mm:ss")] Service $serviceName has stopped !" -Verbose
+            Write-Verbose "[$(Get-Date -f "hh:mm:ss")] Restarting service $serviceName..." -Verbose
 
             try 
             {
@@ -55,7 +55,7 @@
         }
         else
         {
-            Write-Verbose "[$(Get-Date -f "g")] Service $serviceName is running..." -Verbose 
+            Write-Verbose "[$(Get-Date -f "hh:mm:ss")] Service $serviceName is running..." -Verbose 
         }
 
         

@@ -52,7 +52,7 @@
 
                 try 
                 {
-                    $OutputObj.Add('WMI', [bool](Get-WmiObject @WMIParams -ErrorAction Stop))
+                    $OutputObj.Add('WMI', [bool](Get-CimInstance @WMIParams -ErrorAction Stop))
                 }
                 catch
                 {

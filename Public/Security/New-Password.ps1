@@ -14,9 +14,9 @@ function New-Password
 #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory = $false, Position = 0)][ValidateRange(2, 100)][Int32]$Length = 12,
+        [Parameter(Mandatory = $false, Position = 0)][ValidateRange(2, 100)][Int32]$Length = 25,
         [Parameter(Mandatory = $false, Position = 1)][ValidateSet('UpperCase', 'LowerCase', 'Numbers', 'SpecialCharacters')]
-        [String[]]$Include = @('UpperCase', 'LowerCase', 'Numbers', 'SpecialCharacters')
+        [String[]]$Include = @('UpperCase', 'LowerCase', 'Numbers')
     )
 
     Begin { }

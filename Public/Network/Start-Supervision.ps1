@@ -15,11 +15,11 @@ Function Start-Supervision
     | nas    | UP     | 100,00%  | 0,00%    | 5         |
     | jeedom | UP     | 100,00%  | 0,00%    | 5         |
     | bigone | UP     | 100,00%  | 0,00%    | 5         |
-    | toto   | DOWN   | 0,00%    | 100,00%  | 5         |
+    | toto   | DOWN   | 0,00%    | 100,00%  | 5         
 #>
     Param
     (
-        [Parameter(Mandatory=$True,Position=1,ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true)]
+        [Parameter(Mandatory=$True,Position=1,ValueFromPipeline=$true)]
         [Alias("Name","ComputerName","Computer")]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]

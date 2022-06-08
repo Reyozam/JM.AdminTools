@@ -1,4 +1,4 @@
-
+﻿
 Function Start-PingView
 {
     <#
@@ -42,7 +42,7 @@ Function Start-PingView
             {
                 $false
             }
-            RTT    = if ($PSVersionTable.PSVersion.Major -eq 7 ) {$Result.Latency} else {$Result.ResponseTime} #Change in v7 on object properties
+            RTT    = if ($PSVersionTable.PSVersion.Major -eq 7 ) { $Result.Latency } else { $Result.ResponseTime } #Change in v7 on object properties
         }
     }
     
@@ -50,7 +50,7 @@ Function Start-PingView
     $RunNB = 0
     while ($true)
     {
-        
+        Get-Job PING* | Remove-Job
 
         $Jobs = foreach ($Target in $Hosts) 
         {
@@ -59,13 +59,14 @@ Function Start-PingView
         
         
         $RunNB ++
+        $JobsReturn = $null
         $JobsReturn = $Jobs | Wait-Job | Receive-Job 
         
         Clear-Host
         Write-Host " PING STATUS FOR $($Hosts.Count) TARGETS - Run $RunNB times - [Refresh in $RefreshTime seconds] " -ForegroundColor Black -BackgroundColor White
-        Write-host ""
+        Write-Host ""
 
-        $JobsReturn| ForEach-Object {
+        $JobsReturn | ForEach-Object {
             
             if ($env:WT_SESSION)
             {
@@ -80,7 +81,6 @@ Function Start-PingView
                     Write-Host "🔴" -NoNewline
                     Write-Host $("`t{0,-$MaxTargetNameLength}" -f $_.Target) -ForegroundColor Red
                 }
-
             }
             else
             {
@@ -98,6 +98,7 @@ Function Start-PingView
         }
 
         Start-Sleep -Seconds $RefreshTime
+
         
     }
 

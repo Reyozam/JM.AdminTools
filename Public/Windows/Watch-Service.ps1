@@ -1,15 +1,5 @@
 ﻿function Watch-Service
 {
-<#
-.SYNOPSIS
-    Watch a service and restart it if it stops
-.DESCRIPTION
-    Watch a service and restart it if it stops
-.PARAMETER  ServiceName
-    Service name
-.EXAMPLE
-    Watch-Service -ServiceName wuaserv
-#> 
     [CmdletBinding()]
     param (
         
@@ -18,10 +8,13 @@
         $ServiceName,
 
         [Parameter()]
+        [switch]
+        $NoServiceRestart,
+
+        [Parameter()]
         [int]
         $TimeLapse = 5
     )
-    
   
     try 
     {
@@ -32,38 +25,42 @@
         throw "Service `"$ServiceName`" does not exist"
     }
         
-    Write-Verbose "[$(Get-Date -f "hh:mm:ss")] Watching service $serviceName..." -Verbose
+    Write-Verbose "[$(Get-Date -f "g")] Watching service $serviceName..." -Verbose
 
     do
     {
         Start-Sleep $TimeLapse
 
-        if (Get-Service $SVC.Name | Where-Object {$_.Status -eq "Stopped"})
+        if (Get-Service $SVC.Name | Where-Object { $_.Status -eq "Stopped" })
         {
-            Write-Warning "[$(Get-Date -f "hh:mm:ss")] Service $serviceName has stopped !" -Verbose
-            Write-Verbose "[$(Get-Date -f "hh:mm:ss")] Restarting service $serviceName..." -Verbose
 
-            try 
-            {
-                Get-Service $SVC.Name | Start-Service -ErrorAction Stop
+            if ($NoServiceRestart)
+            { 
+
+                Write-Warning "[$(Get-Date -f "g")] Service $serviceName has stopped !" -Verbose
+                Write-Verbose "[$(Get-Date -f "g")] [No restart mode] Service $serviceName... will not be restarted " -Verbose
             }
-            catch 
+            else
             {
-                Write-Error "Unable to restart the service"
+                Write-Warning "[$(Get-Date -f "g")] Service $serviceName has stopped !" -Verbose
+                Write-Verbose "[$(Get-Date -f "g")] Attempting to restart Service $serviceName..." -Verbose
+
+                try 
+                {
+                    Get-Service $SVC.Name | Start-Service -ErrorAction Stop 
+                }
+                catch 
+                {
+                    Write-Error "Unable to restart the service (Run As Admin ?)"
+                }
             }
             
         }
         else
         {
-            Write-Verbose "[$(Get-Date -f "hh:mm:ss")] Service $serviceName is running..." -Verbose 
+            Write-Verbose "[$(Get-Date -f "g")] Service $serviceName is running..." -Verbose 
         }
 
-        
-        
-    } while ($true)
-    
-
-    
-
-    
+    }  while ($true)
+            
 }

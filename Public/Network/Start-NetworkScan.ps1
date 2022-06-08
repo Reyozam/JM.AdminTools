@@ -33,7 +33,6 @@
     192.168.178.22 Up     XXXXX-PC.fritz.box XX-XX-XX-XX-XX-XX ASRock Incorporation
 
     .LINK
-    https://github.com/BornToBeRoot/PowerShell_IPv4NetworkScanner/blob/master/README.md
 #>
 
     [CmdletBinding(DefaultParameterSetName = 'CIDR')]

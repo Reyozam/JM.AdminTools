@@ -7,7 +7,14 @@ Function Get-WindowsPatchLevel
         [Alias('Name', 'Hostname')]
         [ValidateScript({ Test-Connection -ComputerName $_ -Quiet -Count 1 })]
         [string[]]
-        $Computername
+        $Computername,
+
+        # Specifies the user account credentials to use when performing this task.
+        [Parameter()]
+        [ValidateNotNull()]
+        [System.Management.Automation.PSCredential]
+        [System.Management.Automation.Credential()]
+        $Credential = [System.Management.Automation.PSCredential]::Empty
     )
 
     begin
@@ -23,6 +30,11 @@ Function Get-WindowsPatchLevel
         {
             $RemoteParam['ComputerName'] = $Computername
             $RemoteParam['HideComputerName'] = $true
+        }
+
+        if ($Credential )
+        {
+            $RemoteParam['Credential'] = $Credential
         }
 
         [scriptblock]$ScriptBlock = {

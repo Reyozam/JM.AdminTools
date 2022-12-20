@@ -18,7 +18,7 @@
 
           $Remain = $TimeSpan - $stopWatch.Elapsed
 
-          Write-Vebose ("{0}m:{1}s remaining..." -f $Remain.Minutes,$Remain.Seconds) -Verbose
+          Write-Verbose ("{0}m:{1}s remaining..." -f $Remain.Minutes,$Remain.Seconds) -Verbose
 
         }
     }

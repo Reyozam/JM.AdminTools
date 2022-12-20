@@ -4,7 +4,7 @@
         [int]$Minutes
     )
 
-    if ($null -ne $Minutes)
+    if ($Minutes -ne 0)
     {
         Write-Verbose "Keep Awake for $Minutes minutes ..." -Verbose
         $timeSpan = New-TimeSpan -Minutes $Minutes

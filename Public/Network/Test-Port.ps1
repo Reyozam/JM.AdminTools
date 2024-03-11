@@ -36,7 +36,7 @@
 		{
 			foreach ($Portx in $Port)
 			{
-				$Output = [ordered]@{ 'Computername' = $Computer; 'Port' = $Portx; 'Protocol' = $Protocol; 'Result' = '' }
+				$Output = [ordered]@{ 'Computername' = $Computer; 'Port' = $Portx; 'Protocol' = $Protocol; 'Result' = $null }
 				Write-Verbose "$($MyInvocation.MyCommand.Name) - Beginning port test on '$Computer' on port '$Protocol : $Portx'"
 				if ($Protocol -eq 'TCP')
 				{
@@ -68,12 +68,12 @@
 					$a = new-object system.text.asciiencoding
 					$byte = $a.GetBytes("$(Get-Date)")
 					[void]$UdpClient.Send($byte, $byte.length)
-					
+
 					Write-Verbose "$($MyInvocation.MyCommand.Name) - Creating remote endpoint"
 					$remoteendpoint = New-Object system.net.ipendpoint([system.net.ipaddress]::Any, 0)
 					try
 					{
-						
+
 						Write-Verbose "$($MyInvocation.MyCommand.Name) - Waiting for message return"
 						$receivebytes = $UdpClient.Receive([ref]$remoteendpoint)
 						[string]$returndata = $a.GetString($receivebytes)

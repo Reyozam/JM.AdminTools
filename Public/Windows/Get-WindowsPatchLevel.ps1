@@ -12,9 +12,7 @@ Function Get-WindowsPatchLevel
         # Specifies the user account credentials to use when performing this task.
         [Parameter()]
         [ValidateNotNull()]
-        [System.Management.Automation.PSCredential]
-        [System.Management.Automation.Credential()]
-        $Credential = [System.Management.Automation.PSCredential]::Empty
+        [System.Management.Automation.PSCredential]$Credential
     )
 
     begin
@@ -23,23 +21,12 @@ Function Get-WindowsPatchLevel
 
     process
     {
-        Write-Verbose "Query $Computername ..."
+
         $RemoteParam = @{}
-
-        if ($Computername )
-        {
-            $RemoteParam['ComputerName'] = $Computername
-            $RemoteParam['HideComputerName'] = $true
-        }
-
-        if ($Credential )
-        {
-            $RemoteParam['Credential'] = $Credential
-        }
 
         [scriptblock]$ScriptBlock = {
 
-            $ProductName = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' –Name ProductName).ProductName
+            $ProductName = Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty Caption
             $Version = Try { (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' –Name ReleaseID –ErrorAction Stop).ReleaseID } Catch { 'N/A' }
             $CurrentBuild = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' –Name CurrentBuild).CurrentBuild
             $UBR = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' –Name UBR).UBR
@@ -56,7 +43,26 @@ Function Get-WindowsPatchLevel
 
         }
 
-        Invoke-Command -ScriptBlock $ScriptBlock @RemoteParam | Select-Object -ExcludeProperty RunspaceID
+        if ($Credential )
+        {
+            $RemoteParam['Credential'] = $Credential
+        }
+
+        if ($Computername )
+        {
+            $RemoteParam['ComputerName'] = $Computername
+            $RemoteParam['HideComputerName'] = $true
+
+            Write-Verbose "Query $Computername ..."
+            Invoke-Command -ScriptBlock $ScriptBlock @RemoteParam | Select-Object -ExcludeProperty RunspaceID
+        }
+        else
+        {
+            Write-Verbose "Query Localhost ..."
+            Invoke-Command -ScriptBlock $ScriptBlock  | Select-Object -ExcludeProperty RunspaceID
+
+        }
+
     }
 
     end {

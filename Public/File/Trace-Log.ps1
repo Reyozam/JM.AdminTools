@@ -1,4 +1,4 @@
-﻿function Trace-Log 
+﻿function Trace-Log
 {
 <#
 .SYNOPSIS
@@ -20,8 +20,8 @@
 
     $WarningPattern = "Attention|Warning|Warn"
     $ErrorPattern = "Error|Failed|Erreur"
-    $SuccessPattern = "Success"
-    
+    $SuccessPattern = "SUCCESS"
+
     if (Test-Path $LogPath)
     {
         if ($Wait)
@@ -30,11 +30,11 @@
             {
                 Get-Content $LogPath -Wait -Tail 15 | ForEach-Object {
 
-                    switch ($_) 
+                    switch ($_)
                     {
-                        { $_ -match $ErrorPattern } { Write-Host $_ -BackgroundColor Red -ForegroundColor ($host.ui.RawUI.BackgroundColor) }
-                        { $_ -match $WarningPattern } { Write-Host $_ -BackgroundColor DarkYellow -ForegroundColor ($host.ui.RawUI.BackgroundColor) }
-                        { $_ -match $SuccessPattern } { Write-Host $_ -BackgroundColor Green -ForegroundColor ($host.ui.RawUI.BackgroundColor) }
+                        { $_ -match $ErrorPattern } { Write-Host $_ -ForegroundColor Red  }
+                        { $_ -match $WarningPattern } { Write-Host $_ -ForegroundColor DarkYellow  }
+                        { $_ -match $SuccessPattern } { Write-Host $_ -ForegroundColor Green  }
                         default { Write-Host $_ }
                     }
                 }
@@ -44,18 +44,19 @@
         {
             Get-Content $LogPath | ForEach-Object {
 
-                switch ($_) 
+                switch ($_)
                 {
-                    { $_ -match $ErrorPattern } { Write-Host $_ -BackgroundColor Red -ForegroundColor ($host.ui.RawUI.BackgroundColor) }
-                    { $_ -match $WarningPattern } { Write-Host $_ -BackgroundColor DarkYellow -ForegroundColor ($host.ui.RawUI.BackgroundColor) }
+                    { $_ -match $ErrorPattern } { Write-Host $_ -ForegroundColor Red  }
+                    { $_ -match $WarningPattern } { Write-Host $_ -ForegroundColor DarkYellow  }
+                    { $_ -match $SuccessPattern } { Write-Host $_ -ForegroundColor Green  }
                     default { Write-Host $_ }
                 }
-            
-        
+
+
 
             }
         }
-        
+
 
 
     }

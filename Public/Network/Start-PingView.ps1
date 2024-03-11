@@ -18,7 +18,7 @@ Function Start-PingView
     Param
     (
         [Parameter(Mandatory = $True, Position = 1, ValueFromPipeline = $true)]
-        [Alias("Name", "ComputerName", "Computer")]
+        [Alias('Name', 'ComputerName', 'Computer')]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [string[]]$Hosts,
@@ -26,7 +26,7 @@ Function Start-PingView
     )
 
     Get-Job PING* | Remove-Job
-    
+
     $ScriptBlock = {
         param ($Target)
 
@@ -45,61 +45,48 @@ Function Start-PingView
             RTT    = if ($PSVersionTable.PSVersion.Major -eq 7 ) { $Result.Latency } else { $Result.ResponseTime } #Change in v7 on object properties
         }
     }
-    
+
     $MaxTargetNameLength = ($hosts | Sort-Object -Property length -Descending)[0].length
     $RunNB = 0
+
+    Write-Host " PING STATUS FOR $($Hosts.Count) TARGETS - Run $RunNB times - WAIT FOR FIRST PING" -ForegroundColor Black -BackgroundColor White
     while ($true)
     {
+
+
         Get-Job PING* | Remove-Job
 
-        $Jobs = foreach ($Target in $Hosts) 
+        $Jobs = foreach ($Target in $Hosts)
         {
             Start-Job -ScriptBlock $ScriptBlock -Name $("PING_$Target") -ArgumentList $Target
         }
-        
-        
+
+
         $RunNB ++
         $JobsReturn = $null
-        $JobsReturn = $Jobs | Wait-Job | Receive-Job 
-        
+        $JobsReturn = $Jobs | Wait-Job | Receive-Job
+
         Clear-Host
         Write-Host " PING STATUS FOR $($Hosts.Count) TARGETS - Run $RunNB times - [Refresh in $RefreshTime seconds] " -ForegroundColor Black -BackgroundColor White
-        Write-Host ""
+        Write-Host
 
-        $JobsReturn | ForEach-Object {
-            
-            if ($env:WT_SESSION)
-            {
+        $Return = $JobsReturn | ForEach-Object {
 
-                if ($_.Result -eq $true) 
-                { 
-                    Write-Host "🟢" -NoNewline
-                    Write-Host $("`t{0,-$MaxTargetNameLength} [{1}ms]" -f $_.Target, $_.RTT) -ForegroundColor Green
-                }
-                else
-                {
-                    Write-Host "🔴" -NoNewline
-                    Write-Host $("`t{0,-$MaxTargetNameLength}" -f $_.Target) -ForegroundColor Red
-                }
-            }
-            else
-            {
-                if ($_.Result -eq $true) 
-                { 
-                    Write-Host "[ UP ]" -NoNewline -BackgroundColor Green -ForegroundColor Black
-                    Write-Host $("`t{0,-$MaxTargetNameLength} [{1}ms]" -f $_.Target, $_.RTT) -ForegroundColor Green
-                }
-                else
-                {
-                    Write-Host "[DOWN]" -NoNewline -BackgroundColor Red -ForegroundColor Black
-                    Write-Host $("`t{0,-$MaxTargetNameLength}" -f $_.Target) -ForegroundColor Red
-                }
+            [PSCustomObject]@{
+                Status  = if ($_.Result -eq $true) { '🟢' } else { '🔴' }
+                Name    = $_.Target
+                Latence = if ($_.Result -eq $true) {  "{0}ms" -f $_.RTT }
+
             }
         }
 
+        Write-Output $Return
+
+
         Start-Sleep -Seconds $RefreshTime
 
-        
+
     }
 
 }
+

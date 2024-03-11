@@ -16,7 +16,16 @@
     do
     {
       $Remain = $TimeSpan - $stopWatch.Elapsed
-      Write-Verbose ('{0}m:{1}s remaining...' -f $Remain.Minutes, $Remain.Seconds) -Verbose
+
+      if ($Remain.Hours -gt 0)
+      {
+        Write-Verbose ('{0}h:{1}m:{2}s remaining...' -f $Remain.Hours, $Remain.Minutes, $Remain.Seconds) -Verbose
+      }
+      else
+      {
+        Write-Verbose ('{0}m:{1}s remaining...' -f $Remain.Minutes, $Remain.Seconds) -Verbose
+      }
+
 
       $wsh.SendKeys('+{F15}')
 

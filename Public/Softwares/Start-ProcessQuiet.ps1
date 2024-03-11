@@ -11,8 +11,8 @@ function Start-ProcessQuiet
 	Executable arguments
 
 .EXAMPLE
-    Start-ProcessQuiet -Filepath "cmd" -argument "/c ipconfig" 
-#>   
+    Start-ProcessQuiet -Filepath "cmd" -argument "/c ipconfig"
+#>
     [CmdletBinding()]
     Param
     (
@@ -21,7 +21,7 @@ function Start-ProcessQuiet
         [string]
         $FilePath,
         # Argument List for Process
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [string]
         $ArgumentList,
         # Argument List for Process
@@ -29,7 +29,7 @@ function Start-ProcessQuiet
         [string]
         $WorkingDirectory = $pwd.path
     )
-    
+
     $ProcessInfo = New-Object System.Diagnostics.ProcessStartInfo
     $ProcessInfo.WorkingDirectory = $WorkingDirectory
     $ProcessInfo.FileName = $FilePath
